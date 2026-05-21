@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779377011,
-        "narHash": "sha256-0BnVSzWcdk5s4kzlb1G6zrcB7r0ZBLGu1C3TL1n/Sok=",
+        "lastModified": 1779396793,
+        "narHash": "sha256-n3HvSP5mHY3O/+PLpQcT5ayTpk3DoXRpJiLvQYvH/ds=",
         "owner": "jgus",
         "repo": "bencoding-flake",
-        "rev": "12d22d4fff051bea9f06c5dea445a5b5eb88f171",
+        "rev": "e6dc2a5806b81df0045fff8a49365a1d72923af6",
         "type": "github"
       },
       "original": {
