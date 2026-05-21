@@ -36,6 +36,10 @@ git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
 echo "Querying upstream..."
 mapfile -t raw_versions < <(list_upstream_versions)
+if (( ${#raw_versions[@]} == 0 )); then
+  echo "error: list_upstream_versions returned no rows (auth issue?)" >&2
+  exit 1
+fi
 declare -a all_versions=()
 for v in "${raw_versions[@]}"; do
   v="${v#[Vv]}"
