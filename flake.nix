@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-lib = {
+      url = "github:jgus/flake-lib/v1";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
     bencoding = {
       url = "github:jgus/bencoding-flake/v0.2";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,12 +16,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, bencoding }:
+  outputs = { self, nixpkgs, flake-utils, flake-lib, bencoding }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pin = import ./pin.nix;
         inherit (pin) version sourceRev sourceHash;
         pkgs = import nixpkgs { inherit system; };
+        source = { type = "github"; owner = "Casvt"; repo = "Kapowarr"; };
         bencoding-pkg = bencoding.packages.${system}.bencoding;
         python = pkgs.python3.withPackages (ps: with ps; [
           typing-extensions
@@ -52,21 +58,28 @@
           '';
           meta.mainProgram = "kapowarr";
         };
-        update-version = pkgs.writeShellApplication {
-          name = "update-version";
-          # python3.withPackages can't be expressed as a shebang flake spec
-          runtimeInputs = [ (pkgs.python3.withPackages (ps: [ ps.packaging ])) ];
-          text = ''exec ${./update-version.sh} "$@"'';
-        };
-        update-branches = pkgs.writeShellApplication {
-          name = "update-branches";
-          text = ''exec ${./update-branches.sh} "$@"'';
-        };
       in
       {
         packages = {
-          inherit kapowarr update-version update-branches;
+          inherit kapowarr;
           default = kapowarr;
+          update-version = flake-lib.lib.mkUpdateVersion {
+            inherit pkgs source;
+            buildAttr = "kapowarr";
+            # Upstream requirements.txt pins bencoding with a range; resolve to the matching bencoding-flake aggregate.
+            siblings = [{
+              reqName = "bencoding";
+              pypiName = "bencoding";
+              flakeRepo = "jgus/bencoding-flake";
+              mode = "resolve";
+            }];
+          };
+          update-branches = flake-lib.lib.mkUpdateBranches {
+            inherit pkgs source;
+            pinSchema = "github";
+            # flake.nix is branch-owned because the cascade rewrites the bencoding URL.
+            branchOwnedFiles = [ "pin.nix" "flake.lock" "flake.nix" ];
+          };
         };
       });
 }
