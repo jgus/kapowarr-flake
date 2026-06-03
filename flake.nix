@@ -13,6 +13,7 @@
       url = "github:jgus/bencoding-flake/v0.2";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+      inputs.flake-lib.follows = "flake-lib";
     };
   };
 
