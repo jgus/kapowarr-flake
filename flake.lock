@@ -2,6 +2,7 @@
   "nodes": {
     "bencoding": {
       "inputs": {
+        "flake-lib": "flake-lib",
         "flake-utils": [
           "flake-utils"
         ],
@@ -10,11 +11,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780389194,
-        "narHash": "sha256-J2zRI/s0LCGdnFrR2CgEoRBGoOOQxsgBxw3ImCALs7o=",
+        "lastModified": 1780496779,
+        "narHash": "sha256-g1sYmbSjVB4y+56GpFudke2H4NiOtCOlqEacRfAoAR8=",
         "owner": "jgus",
         "repo": "bencoding-flake",
-        "rev": "7ab769233ad10ad5453cf8be38140cc78dd70bbf",
+        "rev": "0e662bbf30ecd8128e88a9a405f465ec7e009a97",
         "type": "github"
       },
       "original": {
@@ -25,6 +26,32 @@
       }
     },
     "flake-lib": {
+      "inputs": {
+        "flake-utils": [
+          "bencoding",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "bencoding",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780496564,
+        "narHash": "sha256-r+aZugsCoUAmq8KY74mV/xrftUkC65GrGZTg1RPew8U=",
+        "owner": "jgus",
+        "repo": "flake-lib",
+        "rev": "1fc604f838cd7986f917886d795dbd074670e595",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jgus",
+        "ref": "v1",
+        "repo": "flake-lib",
+        "type": "github"
+      }
+    },
+    "flake-lib_2": {
       "inputs": {
         "flake-utils": [
           "flake-utils"
@@ -85,7 +112,7 @@
     "root": {
       "inputs": {
         "bencoding": "bencoding",
-        "flake-lib": "flake-lib",
+        "flake-lib": "flake-lib_2",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       }
